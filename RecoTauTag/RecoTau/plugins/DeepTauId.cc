@@ -320,7 +320,6 @@ private:
     {
         static constexpr bool check_all_set = false;
         static constexpr float magic_number = -42;
-        static const TauIdMVAAuxiliaries clusterVariables;
 
         tensorflow::Tensor inputs(tensorflow::DT_FLOAT, { 1, dnn_inputs_2017v1::NumberOfInputs});
         const auto& get = [&](int var_index) -> float& { return inputs.matrix<float>()(0, var_index); };
@@ -364,11 +363,8 @@ private:
         get(dnn::pt_weighted_dr_iso) = reco::tau::pt_weighted_dr_iso(tau, tau.decayMode());
         get(dnn::leadingTrackNormChi2) = tau.leadingTrackNormChi2();
         get(dnn::e_ratio) = reco::tau::eratio(tau);
-        get(dnn::gj_angle_diff) = CalculateGottfriedJacksonAngleDifference(tau);
-        get(dnn::n_photons) = reco::tau::n_photons_total(tau);
-        get(dnn::e_ratio) = clusterVariables.tau_Eratio(tau);
         get(dnn::gj_angle_diff) = calculateGottfriedJacksonAngleDifference(tau);
-        get(dnn::n_photons) = clusterVariables.tau_n_photons_total(tau);
+        get(dnn::n_photons) = reco::tau::n_photons_total(tau);
         get(dnn::emFraction) = tau.emFraction_MVA();
         get(dnn::has_gsf_track) = leadChargedHadrCand && std::abs(leadChargedHadrCand->pdgId()) == 11;
         get(dnn::inside_ecal_crack) = isInEcalCrack(tau.p4().Eta());
